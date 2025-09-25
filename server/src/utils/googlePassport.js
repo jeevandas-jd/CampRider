@@ -1,6 +1,6 @@
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
-const User = require("../models/User");
+const User = require("../models/authentication/User");
 
 passport.use(
   new GoogleStrategy(
@@ -9,7 +9,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done,user_role) => {
       try {
         let user = await User.findOne({ email: profile.emails[0].value });
 
@@ -18,7 +18,7 @@ passport.use(
           user = await User.create({
             email: profile.emails[0].value,
             googleId: profile.id,
-            role: "consumer",
+            role: user_role || "consumer",
             isVerified: true,
           });
         }
