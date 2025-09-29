@@ -9,10 +9,17 @@ var usersRouter = require('./routes/users');
 const mongoose = require("mongoose");
 const passport = require("passport");
 const cors=require("cors");
-
+var app=express();
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 require("dotenv").config();
 const authRoutes = require("../server/src/routes/authRoutes");
 require("../server/src/utils/googlePassport"); // initialize Google Strategy
+
+require("../server/src/models/loadModels")
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -21,7 +28,6 @@ mongoose
   })
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
-var app = express();
 app.use(express.json());
 
 app.use(passport.initialize());
@@ -44,6 +50,15 @@ app.use("/api/hello",(req,res)=>{
 
 // Auth routes
 app.use("/api/auth", authRoutes);
+	//admin routes
+const adminRoutes = require("../server/src/routes/adminRoutes");
+app.use("/api/admin", adminRoutes);
+//pilot routes
+const pilotRoutes = require("../server/src/routes/pilotRoutes");
+app.use("/api/pilot", pilotRoutes);
+//consumer routes
+const consumerRoutes=require("../server/src/routes/consumerRoutes");
+app.use("/api/consumer",consumerRoutes)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

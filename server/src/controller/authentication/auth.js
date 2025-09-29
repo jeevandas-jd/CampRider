@@ -13,6 +13,8 @@ exports.register = async (req, res) => {
   try {
     const { email, password, role } = req.body;
 
+
+
     // check if user exists
     let existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -27,6 +29,7 @@ exports.register = async (req, res) => {
       password: hashedPassword,
       role,
       isVerified: false,
+      
     });
 
     // create verification token (short expiry)
@@ -163,3 +166,6 @@ exports.googleAuthCallback = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+// get 
