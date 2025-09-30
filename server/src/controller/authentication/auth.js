@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 
-
 const { hashPassword, comparePassword } = require("../../utils/bcryptUtils");
 const { generateToken, verifyToken } = require("../../utils/jwtUtils");
 const { sendEmail } = require("../../utils/emailUtils");
