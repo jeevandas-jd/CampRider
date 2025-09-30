@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 
-
 const { hashPassword, comparePassword } = require("../../utils/bcryptUtils");
 const { generateToken, verifyToken } = require("../../utils/jwtUtils");
 const { sendEmail } = require("../../utils/emailUtils");
@@ -12,8 +11,6 @@ const { sendEmail } = require("../../utils/emailUtils");
 exports.register = async (req, res) => {
   try {
     const { email, password, role } = req.body;
-
-
 
     // check if user exists
     let existingUser = await User.findOne({ email });
@@ -29,7 +26,6 @@ exports.register = async (req, res) => {
       password: hashedPassword,
       role,
       isVerified: false,
-      
     });
 
     // create verification token (short expiry)
@@ -166,6 +162,3 @@ exports.googleAuthCallback = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
-// get 
